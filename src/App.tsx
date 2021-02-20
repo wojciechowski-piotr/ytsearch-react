@@ -1,12 +1,13 @@
-import { ComponentState, ReactText, useState } from 'react';
+import { useState } from 'react';
 
-import { Query, QueryFunction, QueryFunctionContext, QueryKey, useQuery } from 'react-query';
+import { QueryFunctionContext, useQuery } from 'react-query';
 
 import Nav from './components/Nav';
 import SearchBar from './components/SearchBar';
 import ResultsItem from './components/ResultsItem';
 
 import { Wrapper } from './App.styles';
+import { baseUrl } from './API';
 
 /* type VideoType = {
     publishedAt: string;
@@ -16,14 +17,14 @@ import { Wrapper } from './App.styles';
     channelId: string;
 }; */
 
+console.log(baseUrl);
+
 const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<Object> => {
     console.log(queryKey);
 
-    /* const response = fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&order=date&q=${queryKey[1]}&regionCode=PL&relevanceLanguage=pl&type=video&videoDefinition=any&key=AIzaSyAmQgPbNqesFslBXuLXy_v2Uz48o84wcts`
-    ); */
+    const response = fetch(baseUrl.toString());
 
-    const response = fetch(`https://jsonplaceholder.typicode.com/users?name=${queryKey[1]}`);
+    // const response = fetch(`https://jsonplaceholder.typicode.com/users?name=${queryKey[1]}`);
 
     const data = (await response).json();
     return data;
