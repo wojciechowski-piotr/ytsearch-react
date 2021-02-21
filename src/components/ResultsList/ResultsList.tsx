@@ -1,15 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { SearchResponseType } from '../../types';
+import ResultsItem from '../ResultsItem';
+import { Wrapper } from './ResultsList.styles';
 
 interface Props {
-    
+    fetchedData: Array<SearchResponseType | any>;
 }
 
-const ResultsList = (props: Props) => {
+const ResultsList = ({ fetchedData }: Props) => {
     return (
-        <div>
-            list
-        </div>
-    )
-}
+        <Wrapper>
+            {fetchedData.map((item: SearchResponseType) => (
+                <ResultsItem key={item.videoId} item={item} />
+            ))}
+        </Wrapper>
+    );
+};
 
-export default ResultsList
+export default ResultsList;

@@ -2,20 +2,27 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 
 import { Wrapper } from './ResultsItem.styles';
+import { SearchResponseType } from '../../types';
 
-interface Props {}
+interface Props {
+    item: SearchResponseType;
+}
 
-const ResultsItem = (props: Props) => {
+const ResultsItem = ({ item }: Props) => {
+    console.log(item);
+
     return (
         <Wrapper>
             <Card className="card-root">
                 <CardMedia
                     component="img"
-                    image="https://s29843.pcdn.co/blog/wp-content/uploads/sites/2/2019/06/YouTube-Thumbnail-Sizes.png"
+                    image={item.snippet.thumbnails.high.url}
                     title="alt text"
                 />
                 <CardContent>
-                    <Typography variant="h6">Youtube video title</Typography>
+                    <Typography variant="h6">
+                        <span dangerouslySetInnerHTML={{__html: item.snippet.title}} />
+                    </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                         Views
                     </Typography>
