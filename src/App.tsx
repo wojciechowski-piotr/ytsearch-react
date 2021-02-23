@@ -4,20 +4,19 @@ import { QueryFunctionContext, useQuery } from 'react-query';
 
 import Nav from './components/Nav';
 import SearchBar from './components/SearchBar';
-import ResultsItem from './components/ResultsItem';
 
 import { Wrapper } from './App.styles';
-import { baseUrl } from './API';
+import { apiKey, baseUrl } from './API';
 
-import searchData from './API/search-fake.json';
 import ResultsList from './components/ResultsList';
+import { SearchObject, SearchResponseType } from './types';
 
-const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<Object> => {
-    console.log(queryKey);
-
-    // const response = fetch(`${baseUrl.toString()}`/);
-
-    const response = fetch('/');
+const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<SearchObject> => {
+    const response = fetch(
+        `${baseUrl.toString()}/search?part=snippet&maxResults=20&order=${queryKey[2]}&q=${
+            queryKey[1]
+        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${apiKey}`
+    );
 
     const data = (await response).json();
     return data;
@@ -25,7 +24,8 @@ const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<Object> =>
 
 const App = () => {
     const [inputValue, setInputValue] = useState<string>('');
-    const [term, setTerm] = useState<string | null>(null);
+    const [term, setTerm] = useState<string | null>('friz');
+    const [searchOrder, setSearchOrder] = useState<Array<string>>(['date']);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -35,18 +35,30 @@ const App = () => {
         setTerm(inputValue);
     };
 
-    /* const { isLoading, error, data } = useQuery(['videos', term], getVideos, {
+    const searchQuery = useQuery(['videos', term, searchOrder], getVideos, {
         refetchOnWindowFocus: false,
-    }); */
+    });
 
-    console.log(term);
+    let videosIds: Array<string> = [];
+
+    searchQuery.data?.items.map((item: SearchResponseType) => {
+        if (item.id.videoId) {
+            return videosIds.push(item.id.videoId);
+        }
+
+        return false;
+    });
+
+    console.log(videosIds);
 
     return (
         <>
             <Nav />
             <Wrapper fixed>
                 <SearchBar term={inputValue} handleChange={handleChange} handleSubmit={handleSubmit} />
-                <ResultsList fetchedData={searchData.items} />
+                {searchQuery.data && <ResultsList fetchedData={searchQuery.data?.items} />}
+                {searchQuery.isLoading && <div>Loading...</div>}
+                {searchQuery.error && <div>Something went wrong...</div>}
             </Wrapper>
         </>
     );

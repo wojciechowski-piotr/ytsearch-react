@@ -1,11 +1,16 @@
+export type SearchObject = {
+    items: Array<SearchResponseType>;
+}
 export type SearchResponseType = {
-    videoId: string;
+    id: {
+        videoId: string;
+    };
     snippet: {
         title: string;
         thumbnails: {
             high: {
                 url: string;
-            }
-        }
+            };
+        };
     };
-}
+};

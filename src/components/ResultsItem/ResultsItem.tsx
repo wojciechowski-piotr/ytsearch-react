@@ -9,7 +9,6 @@ interface Props {
 }
 
 const ResultsItem = ({ item }: Props) => {
-    console.log(item);
 
     return (
         <Wrapper>
@@ -24,7 +23,10 @@ const ResultsItem = ({ item }: Props) => {
                         <span dangerouslySetInnerHTML={{__html: item.snippet.title}} />
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                        Views
+                        Views &#8901; publishedAt
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                        Channel title
                     </Typography>
                 </CardContent>
             </Card>
