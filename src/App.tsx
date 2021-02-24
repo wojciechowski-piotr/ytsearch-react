@@ -6,16 +6,25 @@ import Nav from './components/Nav';
 import SearchBar from './components/SearchBar';
 
 import { Wrapper } from './App.styles';
-import { apiKey, baseUrl } from './API';
+import { baseUrl, apiKey } from './API';
 
 import ResultsList from './components/ResultsList';
-import { SearchObject, SearchResponseType } from './types';
+import { SearchObject, SearchResponseType, VideosObject } from './types';
 
-const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<SearchObject> => {
+const getSearchResults = async ({ queryKey }: QueryFunctionContext): Promise<SearchObject> => {
     const response = fetch(
         `${baseUrl.toString()}/search?part=snippet&maxResults=20&order=${queryKey[2]}&q=${
             queryKey[1]
         }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${apiKey}`
+    );
+
+    const data = (await response).json();
+    return data;
+};
+
+const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<VideosObject> => {
+    const response = fetch(
+        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${apiKey}`
     );
 
     const data = (await response).json();
@@ -35,7 +44,7 @@ const App = () => {
         setTerm(inputValue);
     };
 
-    const searchQuery = useQuery(['videos', term, searchOrder], getVideos, {
+    const searchQuery = useQuery(['search', term, searchOrder], getSearchResults, {
         refetchOnWindowFocus: false,
     });
 
@@ -49,16 +58,22 @@ const App = () => {
         return false;
     });
 
-    console.log(videosIds);
+    const videosQuery = useQuery(['videos', videosIds], getVideos, {
+        enabled: !!videosIds,
+        refetchOnWindowFocus: false,
+    });
+
+/*     console.log(videosIds);
+    console.log(videosQuery.data); */
 
     return (
         <>
             <Nav />
             <Wrapper fixed>
                 <SearchBar term={inputValue} handleChange={handleChange} handleSubmit={handleSubmit} />
-                {searchQuery.data && <ResultsList fetchedData={searchQuery.data?.items} />}
-                {searchQuery.isLoading && <div>Loading...</div>}
-                {searchQuery.error && <div>Something went wrong...</div>}
+                {videosQuery.data && <ResultsList fetchedData={videosQuery.data?.items} />}
+                {videosQuery.isLoading && <div>Loading...</div>}
+                {videosQuery.error && <div>Something went wrong...</div>}
             </Wrapper>
         </>
     );

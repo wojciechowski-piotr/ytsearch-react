@@ -2,10 +2,10 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 
 import { Wrapper } from './ResultsItem.styles';
-import { SearchResponseType } from '../../types';
+import { SearchResponseType, VideosResponseType } from '../../types';
 
 interface Props {
-    item: SearchResponseType;
+    item: VideosResponseType;
 }
 
 const ResultsItem = ({ item }: Props) => {
@@ -23,7 +23,7 @@ const ResultsItem = ({ item }: Props) => {
                         <span dangerouslySetInnerHTML={{__html: item.snippet.title}} />
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                        Views &#8901; publishedAt
+                        Views: {item.statistics.viewCount} &#8901; publishedAt: {item.snippet.publishedAt}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                         Channel title
