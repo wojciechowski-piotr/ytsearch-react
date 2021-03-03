@@ -1,18 +1,26 @@
-import React from 'react';
-import { SearchResponseType, VideosResponseType } from '../../types';
+import React, { useContext } from 'react';
+import { Typography } from '@material-ui/core';
+
+import { DataContext } from '../../contexts/DataContext';
+
+import { VideosResponseType } from '../../types';
+
 import ResultsItem from '../ResultsItem';
 import { Wrapper } from './ResultsList.styles';
 
-interface Props {
-    fetchedData: any[];
-}
+const ResultsList = () => {
+    const { videosQuery, term } = useContext(DataContext);
 
-const ResultsList = ({ fetchedData }: Props) => {
     return (
         <Wrapper>
-            {fetchedData.map((item: VideosResponseType) => (
-                <ResultsItem key={item.id} item={item} />
-            ))}
+            {videosQuery.isLoading && 'Loading...'}
+            {videosQuery.error && 'Something went wrong...'}
+            {videosQuery.data && (
+                <Typography component='span' className='results-label'>
+                    Results for <b>{term}</b>
+                </Typography>
+            )}
+            {videosQuery.data && videosQuery.data.items.map((item: VideosResponseType) => <ResultsItem key={item.id} item={item} />)}
         </Wrapper>
     );
 };

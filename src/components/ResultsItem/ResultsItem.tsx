@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 
 import { Wrapper } from './ResultsItem.styles';
-import { SearchResponseType, VideosResponseType } from '../../types';
+import { VideosResponseType } from '../../types';
 
 interface Props {
     item: VideosResponseType;
