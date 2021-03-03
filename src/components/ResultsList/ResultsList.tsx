@@ -9,17 +9,21 @@ import ResultsItem from '../ResultsItem';
 import { Wrapper } from './ResultsList.styles';
 
 const ResultsList = () => {
-    const { videosQuery, term } = useContext(DataContext);
+    const { videosQuery, term, firstRender } = useContext(DataContext);
 
     return (
         <Wrapper>
-            {videosQuery.isLoading && 'Loading...'}
-            {videosQuery.error && 'Something went wrong...'}
-            {videosQuery.data && (
-                <Typography component='span' className='results-label'>
-                    Results for <b>{term}</b>
+            {firstRender && 'No results yet.'}
+            {term && (
+                <Typography component="span" className="results-label" color="textSecondary">
+                    Results for{' '}
+                    <Typography component="span" color="textPrimary">
+                        <b>{term}</b>
+                    </Typography>
                 </Typography>
             )}
+            {videosQuery.isLoading && 'Loading...'}
+            {videosQuery.error && 'Something went wrong...'}
             {videosQuery.data && videosQuery.data.items.map((item: VideosResponseType) => <ResultsItem key={item.id} item={item} />)}
         </Wrapper>
     );

@@ -7,7 +7,7 @@ import { DataContext } from '../../contexts/DataContext';
 
 const SearchBar = () => {
     const [inputValue, setInputValue] = useState<string>('');
-    const { dispatch } = useContext(DataContext);
+    const { dispatch, setFirstRender } = useContext(DataContext);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -21,6 +21,7 @@ const SearchBar = () => {
         } else {
             dispatch({ type: 'UPDATE', payload: inputValue });
             setInputValue('');
+            setFirstRender(false)
             event.preventDefault();
         }
     };

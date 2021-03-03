@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useReducer, useState } from 'react';
 import { QueryFunctionContext, useQuery } from 'react-query';
 
 import { baseUrl, apiKey } from '../API';
-import { SearchObject, SearchResponseType, VideosObject } from '../types';
+import { LoginAction, SearchObject, SearchResponseType, VideosObject } from '../types';
 
 export const DataContext = createContext<Partial<any>>({});
 
@@ -28,12 +28,20 @@ const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<VideosObje
     return data;
 };
 
+// functiom to fetch channel details
+/* const getChannels = async ({ queryKey }: QueryFunctionContext): Promise<any> => {
+    const response = fetch(`${baseUrl.toString()}/channels?part=id&part=snippet&part=statistics&id=${queryKey[1]}`);
+
+    const data = (await response).json();
+    return data;
+}; */
+
 interface Props {
     children: ReactNode;
 }
 
 // actions to update state
-const reducer = (term: string | null, { type, payload }: any) => {
+const reducer = (term: string | null, { type, payload }: LoginAction) => {
     switch (type) {
         case 'UPDATE':
             return payload;
@@ -46,17 +54,23 @@ const reducer = (term: string | null, { type, payload }: any) => {
 export const DataProvider = ({ children }: Props) => {
     const [searchOrder, setSearchOrder] = useState<Array<string>>(['date']);
     const [term, dispatch] = useReducer(reducer, '');
+    const [firstRender, setFirstRender] = useState(true);
 
     const searchQuery = useQuery(['search', term, searchOrder], getSearchResults, {
         refetchOnWindowFocus: false,
+        enabled: !firstRender,
     });
 
     let videosIds: Array<string> = [];
+    // let channelIds: Array<string> = [];
 
     searchQuery.data?.items.map((item: SearchResponseType) => {
         if (item.id.videoId) {
-            return videosIds.push(item.id.videoId);
+            videosIds.push(item.id.videoId);
         }
+        /* if (item.snippet.channelId) {
+            channelIds.push(item.snippet.channelId);
+        } */
 
         return false;
     });
@@ -66,6 +80,11 @@ export const DataProvider = ({ children }: Props) => {
         refetchOnWindowFocus: false,
     });
 
+    /* const channelsQuery = useQuery(['channels', channelIds], getChannels, {
+        enabled: !!channelIds,
+        refetchOnWindowFocus: false,
+    }); */
+
     const contextValue = {
         searchOrder,
         setSearchOrder,
@@ -73,6 +92,8 @@ export const DataProvider = ({ children }: Props) => {
         videosQuery,
         term,
         dispatch,
+        firstRender,
+        setFirstRender,
     };
     return <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>;
 };

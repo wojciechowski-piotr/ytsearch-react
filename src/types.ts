@@ -4,7 +4,7 @@ export type SearchObject = {
 
 export type VideosObject = {
     items: Array<VideosResponseType>;
-}
+};
 
 export type SearchResponseType = {
     id: {
@@ -12,6 +12,7 @@ export type SearchResponseType = {
     };
     snippet: {
         title: string;
+        channelId: string;
         thumbnails: {
             high: {
                 url: string;
@@ -29,9 +30,12 @@ export type VideosResponseType = {
                 url: string;
             };
         };
+        channelTitle: string;
         publishedAt: string;
     };
     statistics: {
         viewCount: string;
     };
 };
+
+export type LoginAction = { type: 'UPDATE'; payload: string };
