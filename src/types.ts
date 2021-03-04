@@ -1,12 +1,16 @@
 export type SearchObject = {
     items: Array<SearchResponseType>;
+    nextPageToken: string;
+    prevPageToken: string;
 };
 
 export type VideosObject = {
     items: Array<VideosResponseType>;
+    nextId: any;
 };
 
 export type SearchResponseType = {
+    etag: string;
     id: {
         videoId: string;
     };

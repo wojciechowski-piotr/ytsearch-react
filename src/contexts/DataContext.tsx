@@ -1,5 +1,5 @@
-import React, { createContext, ReactNode, useReducer, useState } from 'react';
-import { QueryFunctionContext, useQuery } from 'react-query';
+import { createContext, ReactNode, useReducer, useState } from 'react';
+import { QueryFunctionContext, useInfiniteQuery } from 'react-query';
 
 import { baseUrl, apiKey } from '../API';
 import { LoginAction, SearchObject, SearchResponseType, VideosObject } from '../types';
@@ -7,11 +7,11 @@ import { LoginAction, SearchObject, SearchResponseType, VideosObject } from '../
 export const DataContext = createContext<Partial<any>>({});
 
 // functiom to fetch search results
-const getSearchResults = async ({ queryKey }: QueryFunctionContext): Promise<SearchObject> => {
+const getSearchResults = async ({ queryKey, pageParam = '' }: QueryFunctionContext): Promise<SearchObject> => {
     const response = fetch(
         `${baseUrl.toString()}/search?part=snippet&maxResults=20&order=${queryKey[2]}&q=${
             queryKey[1]
-        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${apiKey}`
+        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${apiKey}${pageParam ? `&pageToken=${pageParam}` : ''}`
     );
 
     const data = (await response).json();
@@ -27,14 +27,6 @@ const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<VideosObje
     const data = (await response).json();
     return data;
 };
-
-// functiom to fetch channel details
-/* const getChannels = async ({ queryKey }: QueryFunctionContext): Promise<any> => {
-    const response = fetch(`${baseUrl.toString()}/channels?part=id&part=snippet&part=statistics&id=${queryKey[1]}`);
-
-    const data = (await response).json();
-    return data;
-}; */
 
 interface Props {
     children: ReactNode;
@@ -56,34 +48,36 @@ export const DataProvider = ({ children }: Props) => {
     const [term, dispatch] = useReducer(reducer, '');
     const [firstRender, setFirstRender] = useState(true);
 
-    const searchQuery = useQuery(['search', term, searchOrder], getSearchResults, {
+    const searchQuery = useInfiniteQuery(['search', term, searchOrder], getSearchResults, {
         refetchOnWindowFocus: false,
         enabled: !firstRender,
+        // getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
+        getNextPageParam: (lastPage) => lastPage.nextPageToken ?? false,
     });
 
     let videosIds: Array<string> = [];
     // let channelIds: Array<string> = [];
 
-    searchQuery.data?.items.map((item: SearchResponseType) => {
-        if (item.id.videoId) {
-            videosIds.push(item.id.videoId);
-        }
-        /* if (item.snippet.channelId) {
-            channelIds.push(item.snippet.channelId);
-        } */
+    console.log(searchQuery.data?.pages[0].nextPageToken);
+    console.log(term);
+    console.log(searchQuery.hasNextPage);
 
-        return false;
-    });
+    searchQuery.data?.pages.map((page) =>
+        page.items.map((item: SearchResponseType) => {
+            if (item.id.videoId) {
+                videosIds.push(item.id.videoId);
+            }
 
-    const videosQuery = useQuery(['videos', videosIds], getVideos, {
+            return false;
+        })
+    );
+
+    const videosQuery = useInfiniteQuery(['videos', videosIds], getVideos, {
         enabled: !!videosIds,
         refetchOnWindowFocus: false,
+        // getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
+        getNextPageParam: (lastPage) => lastPage.nextId ?? false,
     });
-
-    /* const channelsQuery = useQuery(['channels', channelIds], getChannels, {
-        enabled: !!channelIds,
-        refetchOnWindowFocus: false,
-    }); */
 
     const contextValue = {
         searchOrder,
