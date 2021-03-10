@@ -8,4 +8,7 @@ export const Wrapper = styled(Container)`
     .results-label {
         margin-bottom: 1rem;
     }
+    .more-btn {
+        margin: 1rem 0 2rem;
+    }
 `;

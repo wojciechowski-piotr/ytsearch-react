@@ -27,16 +27,18 @@ const ResultsList = () => {
                 : searchQuery.status === 'error'
                 ? `Error: ${videosQuery.error.message}`
                 : searchQuery.data &&
-                searchQuery.data.pages.map((page: any) => (
+                  searchQuery.data.pages.map((page: any) => (
                       <Fragment key={page.nextId}>
                           {page.items.map((item: SearchResponseType) => (
                               <ResultsItem key={item.etag} videoId={item.id.videoId} />
                           ))}
                       </Fragment>
                   ))}
-            <Button onClick={() => searchQuery.fetchNextPage()} disabled={!searchQuery.hasNextPage || searchQuery.isFetchingNextPage}>
-                {searchQuery.isFetchingNextPage ? 'Loading more...' : searchQuery.hasNextPage ? 'LOAD MORE' : 'Nothing more to load'}
-            </Button>
+            {!firstRender && (
+                <Button className='more-btn' onClick={() => searchQuery.fetchNextPage()} disabled={!searchQuery.hasNextPage || searchQuery.isFetchingNextPage}>
+                    {searchQuery.isFetchingNextPage ? 'Loading more...' : searchQuery.hasNextPage ? 'LOAD MORE' : 'Nothing more to load'}
+                </Button>
+            )}
         </Wrapper>
     );
 };

@@ -51,16 +51,10 @@ export const DataProvider = ({ children }: Props) => {
     const searchQuery = useInfiniteQuery(['search', term, searchOrder], getSearchResults, {
         refetchOnWindowFocus: false,
         enabled: !firstRender,
-        // getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
         getNextPageParam: (lastPage) => lastPage.nextPageToken ?? false,
     });
 
     let videosIds: Array<string> = [];
-    // let channelIds: Array<string> = [];
-
-    console.log(searchQuery.data?.pages[0].nextPageToken);
-    console.log(term);
-    console.log(searchQuery.hasNextPage);
 
     searchQuery.data?.pages.map((page) =>
         page.items.map((item: SearchResponseType) => {
@@ -75,7 +69,6 @@ export const DataProvider = ({ children }: Props) => {
     const videosQuery = useInfiniteQuery(['videos', videosIds], getVideos, {
         enabled: !!videosIds,
         refetchOnWindowFocus: false,
-        // getPreviousPageParam: (firstPage) => firstPage.previousId ?? false,
         getNextPageParam: (lastPage) => lastPage.nextId ?? false,
     });
 
