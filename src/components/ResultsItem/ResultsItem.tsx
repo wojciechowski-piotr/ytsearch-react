@@ -5,7 +5,7 @@ import { Wrapper } from './ResultsItem.styles';
 import { VideosObject } from '../../types';
 import numFormatter from '../../utils/numConvert';
 import { QueryFunctionContext, useQuery } from 'react-query';
-import { apiKey, baseUrl } from '../../API';
+import { baseUrl } from '../../API';
 
 interface Props {
     videoId: string;
@@ -13,7 +13,7 @@ interface Props {
 
 const getVideo = async ({ queryKey }: QueryFunctionContext): Promise<VideosObject> => {
     const response = fetch(
-        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${apiKey}`
+        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${process.env.REACT_APP_API_KEY}`
     );
 
     const data = (await response).json();

@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useReducer, useState } from 'react';
 import { QueryFunctionContext, useInfiniteQuery } from 'react-query';
 
-import { baseUrl, apiKey } from '../API';
+import { baseUrl } from '../API';
 import { LoginAction, SearchObject, SearchResponseType, VideosObject } from '../types';
 
 export const DataContext = createContext<Partial<any>>({});
@@ -11,7 +11,7 @@ const getSearchResults = async ({ queryKey, pageParam = '' }: QueryFunctionConte
     const response = fetch(
         `${baseUrl.toString()}/search?part=snippet&maxResults=20&order=${queryKey[2]}&q=${
             queryKey[1]
-        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${apiKey}${pageParam ? `&pageToken=${pageParam}` : ''}`
+        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${process.env.REACT_APP_API_KEY}${pageParam ? `&pageToken=${pageParam}` : ''}`
     );
 
     const data = (await response).json();
@@ -21,7 +21,7 @@ const getSearchResults = async ({ queryKey, pageParam = '' }: QueryFunctionConte
 // functiom to fetch video details
 const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<VideosObject> => {
     const response = fetch(
-        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${apiKey}`
+        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${process.env.REACT_APP_API_KEY}`
     );
 
     const data = (await response).json();
