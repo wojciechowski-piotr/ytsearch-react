@@ -5,7 +5,6 @@ import SearchBar from '../SearchBar'
 
 const Nav = () => {
     return (
-        <>
          <StyledAppBar position='static' elevation={0}>
              <Toolbar>
                  <Typography variant='h6' component='span'>
@@ -14,7 +13,6 @@ const Nav = () => {
                  <SearchBar />
              </Toolbar>
          </StyledAppBar>
-        </>
     )
 }
 

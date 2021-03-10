@@ -7,21 +7,25 @@ import { SearchResponseType } from '../../types';
 
 import ResultsItem from '../ResultsItem';
 import { Wrapper } from './ResultsList.styles';
+import SortByButton from '../SortByButton';
 
 const ResultsList = () => {
     const { searchQuery, videosQuery, term, firstRender } = useContext(DataContext);
 
     return (
         <Wrapper>
-            {firstRender && 'No results yet.'}
-            {term && (
-                <Typography component="span" className="results-label" color="textSecondary">
-                    Results for&nbsp;
-                    <Typography component="span" color="textPrimary">
-                        <b>{term}</b>
+            <div className="topbar">
+                {firstRender && 'No results yet.'}
+                {term && (
+                    <Typography component="span" color="textSecondary">
+                        Results for&nbsp;
+                        <Typography component="span" color="textPrimary">
+                            <b>{term}</b>
+                        </Typography>
                     </Typography>
-                </Typography>
-            )}
+                )}
+                <SortByButton />
+            </div>
             {searchQuery.status === 'loading'
                 ? 'Loading...'
                 : searchQuery.status === 'error'
@@ -35,7 +39,11 @@ const ResultsList = () => {
                       </Fragment>
                   ))}
             {!firstRender && (
-                <Button className='more-btn' onClick={() => searchQuery.fetchNextPage()} disabled={!searchQuery.hasNextPage || searchQuery.isFetchingNextPage}>
+                <Button
+                    className="more-btn"
+                    onClick={() => searchQuery.fetchNextPage()}
+                    disabled={!searchQuery.hasNextPage || searchQuery.isFetchingNextPage}
+                >
                     {searchQuery.isFetchingNextPage ? 'Loading more...' : searchQuery.hasNextPage ? 'LOAD MORE' : 'Nothing more to load'}
                 </Button>
             )}

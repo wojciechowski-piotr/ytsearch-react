@@ -44,7 +44,7 @@ const reducer = (term: string | null, { type, payload }: LoginAction) => {
 };
 
 export const DataProvider = ({ children }: Props) => {
-    const [searchOrder, setSearchOrder] = useState<Array<string>>(['date']);
+    const [searchOrder, setSearchOrder] = useState<string>('date');
     const [term, dispatch] = useReducer(reducer, '');
     const [firstRender, setFirstRender] = useState(true);
 
