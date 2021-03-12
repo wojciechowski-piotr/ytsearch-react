@@ -20,9 +20,10 @@ export const SCCard = styled(Card)`
             display: flex;
             flex-flow: row nowrap;
             justify-content: flex-start;
-            height: 150px;
+            min-height: 150px;
             img {
                 width: 200px;
+                height: auto;
                 object-fit: cover;
             }
         }
@@ -42,7 +43,7 @@ export const SCTypography = styled(Typography)`
     }
     ${(props) => props.theme.breakpoints.up('sm')} {
         &.MuiTypography-h6 > h2 {
-        font-size: inherit;
-    }
+            font-size: inherit;
+        }
     }
 `;
