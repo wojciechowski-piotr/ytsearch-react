@@ -13,7 +13,7 @@ const ResultsList = () => {
     const { searchQuery, videosQuery, term, firstRender } = useContext(DataContext);
 
     return (
-        <Wrapper>
+        <Wrapper disableGutters={true}>
             <div className="topbar">
                 {firstRender && 'No results yet.'}
                 {term && (

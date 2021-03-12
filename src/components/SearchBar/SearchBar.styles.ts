@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import theme from '../../theme';
 
 export const Wrapper = styled(Container)`
+    padding-right: 0;
     form {
         display: flex;
         background-color: ${theme.palette.primary.dark};

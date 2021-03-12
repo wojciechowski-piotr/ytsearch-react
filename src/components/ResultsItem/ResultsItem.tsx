@@ -1,7 +1,7 @@
-import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { CardActionArea, CardContent, CardMedia } from '@material-ui/core';
 import { format } from 'date-fns';
 
-import { Wrapper } from './ResultsItem.styles';
+import { SCCard, SCTypography } from './ResultsItem.styles';
 import { VideosObject } from '../../types';
 import numFormatter from '../../utils/numConvert';
 import { QueryFunctionContext, useQuery } from 'react-query';
@@ -13,7 +13,9 @@ interface Props {
 
 const getVideo = async ({ queryKey }: QueryFunctionContext): Promise<VideosObject> => {
     const response = fetch(
-        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${process.env.REACT_APP_API_KEY}`
+        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${
+            process.env.REACT_APP_API_KEY
+        }`
     );
 
     const data = (await response).json();
@@ -27,30 +29,32 @@ const ResultsItem = ({ videoId }: Props) => {
     });
 
     return (
-        <Wrapper>
+        <>
             {isError && 'Error!'}
             {data && (
-                <Card>
+                <SCCard square={true} elevation={0}>
                     <CardActionArea component="div">
                         <div className="card-grid">
                             <CardMedia component="img" image={data?.items[0].snippet.thumbnails.high.url} title="alt text" />
                             <CardContent>
-                                <Typography variant="h6">
-                                    <span dangerouslySetInnerHTML={{ __html: data?.items[0].snippet.title }} />
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    Views: {numFormatter(data?.items[0].statistics.viewCount)} &#8901;{' '}
-                                    {format(new Date(data?.items[0].snippet.publishedAt), 'd MMM yyyy')}
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    {data?.items[0].snippet.channelTitle}
-                                </Typography>
+                                <SCTypography variant="h6">
+                                    <h2 dangerouslySetInnerHTML={{ __html: data?.items[0].snippet.title }} />
+                                </SCTypography>
+                                <SCTypography variant="subtitle1" color="textSecondary">
+                                    <div className="secondary-label">
+                                        Views: {numFormatter(data?.items[0].statistics.viewCount)} &#8901;{' '}
+                                        {format(new Date(data?.items[0].snippet.publishedAt), 'd MMM yyyy')}
+                                    </div>
+                                </SCTypography>
+                                <SCTypography variant="subtitle1" color="textSecondary">
+                                    <div className="secondary-label">{data?.items[0].snippet.channelTitle}</div>
+                                </SCTypography>
                             </CardContent>
                         </div>
                     </CardActionArea>
-                </Card>
+                </SCCard>
             )}
-        </Wrapper>
+        </>
     );
 };
 

@@ -4,9 +4,9 @@ import { Container } from '@material-ui/core';
 export const Wrapper = styled(Container)`
     display: flex;
     flex-flow: column nowrap;
-    margin-top: 6rem;
+    margin-top: 5.5rem;
     .topbar {
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
