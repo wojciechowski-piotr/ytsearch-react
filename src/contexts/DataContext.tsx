@@ -11,20 +11,34 @@ const getSearchResults = async ({ queryKey, pageParam = '' }: QueryFunctionConte
     const response = fetch(
         `${baseUrl.toString()}/search?part=snippet&maxResults=20&order=${queryKey[2]}&q=${
             queryKey[1]
-        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${process.env.REACT_APP_API_KEY}${pageParam ? `&pageToken=${pageParam}` : ''}`
+        }&regionCode=PL&relevanceLanguage=pl&type=video*videoDefinition=any&key=${process.env.REACT_APP_API_KEY}${
+            pageParam ? `&pageToken=${pageParam}` : ''
+        }`
     );
 
     const data = (await response).json();
+
+    if (!data) {
+        throw new Error('Network response was not ok');
+    }
+
     return data;
 };
 
 // functiom to fetch video details
 const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<VideosObject> => {
     const response = fetch(
-        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${process.env.REACT_APP_API_KEY}`
+        `${baseUrl.toString()}/videos?part=id&part=statistics&part=snippet&id=${queryKey[1]}&regionCode=PL&key=${
+            process.env.REACT_APP_API_KEY
+        }`
     );
 
     const data = (await response).json();
+    
+    if (!data) {
+        throw new Error('Network response was not ok');
+    }
+    
     return data;
 };
 

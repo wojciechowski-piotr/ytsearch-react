@@ -19,6 +19,11 @@ const getVideo = async ({ queryKey }: QueryFunctionContext): Promise<VideosObjec
     );
 
     const data = (await response).json();
+
+    if (!data) {
+        throw new Error('Network response was not ok');
+    }
+
     return data;
 };
 
