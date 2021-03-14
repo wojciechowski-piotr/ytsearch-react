@@ -34,9 +34,9 @@ export const SCCard = styled(Card)`
 `;
 
 export const SCTypography = styled(Typography)`
-    &.MuiTypography-h6 > h2 {
+    &.MuiTypography-h6 > span {
         margin-top: 5px;
-        font-size: 1rem;
+        font-size: 1.25rem;
     }
     .secondary-label {
         font-size: 0.9rem;

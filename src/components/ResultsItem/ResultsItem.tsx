@@ -38,7 +38,7 @@ const ResultsItem = ({ videoId }: Props) => {
                             <CardMedia component="img" image={data?.items[0].snippet.thumbnails.high.url} title="alt text" />
                             <CardContent>
                                 <SCTypography variant="h6">
-                                    <h2 dangerouslySetInnerHTML={{ __html: data?.items[0].snippet.title }} />
+                                    <span dangerouslySetInnerHTML={{ __html: data?.items[0].snippet.title }} />
                                 </SCTypography>
                                 <SCTypography variant="subtitle1" color="textSecondary">
                                     <div className="secondary-label">

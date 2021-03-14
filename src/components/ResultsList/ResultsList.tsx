@@ -31,8 +31,8 @@ const ResultsList = () => {
                 : searchQuery.status === 'error'
                 ? `Error: ${videosQuery.error.message}`
                 : searchQuery.data &&
-                  searchQuery.data.pages.map((page: any) => (
-                      <Fragment key={page.nextId}>
+                  searchQuery.data.pages.map((page: any, index: number) => (
+                      <Fragment key={index}>
                           {page.items.map((item: SearchResponseType) => (
                               <ResultsItem key={item.etag} videoId={item.id.videoId} />
                           ))}
