@@ -18,10 +18,6 @@ const getSearchResults = async ({ queryKey, pageParam = '' }: QueryFunctionConte
 
     const data = (await response).json();
 
-    if (!data) {
-        throw new Error('Network response was not ok');
-    }
-
     return data;
 };
 
@@ -34,10 +30,6 @@ const getVideos = async ({ queryKey }: QueryFunctionContext): Promise<VideosObje
     );
 
     const data = (await response).json();
-    
-    if (!data) {
-        throw new Error('Network response was not ok');
-    }
     
     return data;
 };

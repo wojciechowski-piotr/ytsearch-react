@@ -1,5 +1,5 @@
 # YTsearch-react
-[**DEMO**](https://ytsearch-react.herokuapp.com)
+[**DEMO**](https://pwojciechowski.pl/projects/ytsearch/)
 
 _(still under development)_
 
