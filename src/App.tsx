@@ -1,5 +1,6 @@
 import { ThemeProvider as SCThemeProvider } from 'styled-components';
 import { useTheme } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Nav from './components/Nav';
 import ResultsList from './components/ResultsList';
@@ -7,6 +8,10 @@ import ResultsList from './components/ResultsList';
 import { Wrapper } from './App.styles';
 
 import { DataProvider } from './contexts/DataContext';
+import VideoDetails from './components/VideoDetails';
+import Home from './components/Home';
+
+import './style.css';
 
 const App = () => {
     const muiTheme = useTheme();
@@ -14,10 +19,13 @@ const App = () => {
     return (
         <SCThemeProvider theme={muiTheme}>
             <DataProvider>
+                <Router>
                 <Nav />
-                <Wrapper fixed>
-                    <ResultsList />
-                </Wrapper>
+                    <Switch>
+                        <Route path="/" exact component={Home} />
+                        <Route path="/:id" component={VideoDetails} />
+                    </Switch>
+                </Router>
             </DataProvider>
         </SCThemeProvider>
     );
