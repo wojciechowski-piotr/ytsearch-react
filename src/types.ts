@@ -36,6 +36,7 @@ export type VideosResponseType = {
         };
         channelTitle: string;
         publishedAt: string;
+        description: string;
     };
     statistics: {
         viewCount: string;
