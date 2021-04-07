@@ -3,9 +3,6 @@ import { useTheme } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Nav from './components/Nav';
-import ResultsList from './components/ResultsList';
-
-import { Wrapper } from './App.styles';
 
 import { DataProvider } from './contexts/DataContext';
 import VideoDetails from './components/VideoDetails';
@@ -19,7 +16,7 @@ const App = () => {
     return (
         <SCThemeProvider theme={muiTheme}>
             <DataProvider>
-                <Router>
+                <Router basename="/projects/ytsearch">
                 <Nav />
                     <Switch>
                         <Route path="/" exact component={Home} />

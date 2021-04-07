@@ -1,8 +1,6 @@
 import { Container } from '@material-ui/core';
 import styled from 'styled-components';
 
-import theme from '../../theme';
-
 export const Wrapper = styled(Container)`
     margin-top: 6rem;
     padding-bottom: 3rem;
@@ -18,11 +16,29 @@ export const Wrapper = styled(Container)`
     }
     .infos {
         h2 {
-            margin: 0.25rem 0 1.5rem;
+            margin: 0.25rem 0 1rem;
         }
         &__desc {
+            display: block;
+            padding-top: 1rem; 
             white-space: pre-line;
             word-break: break-word;
+        }
+        .channel {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            margin: 1rem 0;
+            &__media {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+            &__content {
+                &:last-child{
+                    padding-bottom: 16px;
+                }
+            }
         }
     }
     ${(props) => props.theme.breakpoints.up('sm')} {

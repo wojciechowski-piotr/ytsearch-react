@@ -9,6 +9,10 @@ export type VideosObject = {
     nextId: any;
 };
 
+export type ChannelObject = {
+    items: Array<ChannelResponseType>;
+};
+
 export type SearchResponseType = {
     etag: string;
     id: {
@@ -35,11 +39,27 @@ export type VideosResponseType = {
             };
         };
         channelTitle: string;
+        channelId: string;
         publishedAt: string;
         description: string;
     };
     statistics: {
         viewCount: string;
+    };
+};
+
+export type ChannelResponseType = {
+    id: string;
+    snippet: {
+        title: string;
+        thumbnails: {
+            medium: {
+                url: string;
+            };
+        };
+    };
+    statistics: {
+        subscriberCount: string;
     };
 };
 
